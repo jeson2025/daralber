@@ -1,14 +1,11 @@
-// ====== إعدادات الحملة (عدّلها أنت) ======
+// ====== إعدادات الحملة ======
 const CAMPAIGN = {
-  goalAED: 250000,      // الهدف
-  raisedAED: 38500,     // المجموع الحالي
-  lastUpdated: "2026-01-11", // آخر تحديث (YYYY-MM-DD)
+  goalAED: 4754000,         // هدف الحملة
+  raisedAED: 4123938,       // تم جمع
+  lastUpdated: "2026-01-11",
 
-  // ضع رابط الدفع الرسمي هنا (اختياري)
-  paymentLink: "https://jeson2025.github.io/form-site/howmuch.html",
-
-  // ضع IBAN هنا
-  iban: "[ضع IBAN هنا]"
+  // رابط الدفع
+  paymentLink: "https://jeson2025.github.io/form-site/index.html"
 };
 
 // ====== أدوات مساعدة ======
@@ -24,7 +21,6 @@ function copyToClipboard(text){
 }
 
 function toast(msg){
-  // Toast بسيط
   const t = document.createElement("div");
   t.textContent = msg;
   t.style.position = "fixed";
@@ -54,21 +50,25 @@ const pct = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
 setText("goalText", `${fmt(goal)} AED`);
 setText("raisedText", `${fmt(raised)} AED`);
 setText("remainingText", `${fmt(remaining)} AED`);
-setText("pctText", `${pct.toFixed(1)}%`);
+setText("pctText", `${pct.toFixed(2)}%`);
 setText("updatedText", CAMPAIGN.lastUpdated);
 
 const bar = document.getElementById("progressBar");
 if (bar) bar.style.width = ${pct}%;
 
-// IBAN + Payment link
-const ibanEl = document.getElementById("ibanText");
-if (ibanEl) ibanEl.textContent = CAMPAIGN.iban;
-
+// رابط الدفع
 const payLink = document.getElementById("payLink");
 if (payLink) payLink.href = CAMPAIGN.paymentLink;
 
 // ====== تفاعل التبرع ======
 const amountInput = document.getElementById("amountInput");
+
+function normalizeAmount(v){
+  // خليها أرقام فقط
+  const onlyDigits = (v || "").toString().replace(/[^\d]/g, "");
+  return onlyDigits;
+}
+
 document.querySelectorAll(".chip").forEach(btn => {
   btn.addEventListener("click", () => {
     const a = btn.getAttribute("data-amount");
@@ -76,17 +76,20 @@ document.querySelectorAll(".chip").forEach(btn => {
   });
 });
 
+amountInput?.addEventListener("input", () => {
+  amountInput.value = normalizeAmount(amountInput.value);
+});
+
 document.getElementById("copyAmountBtn")?.addEventListener("click", async () => {
-  const val = (amountInput?.value || "").trim();
-  if (!val) return toast("اكتب مبلغ أولاً");
+  const val = normalizeAmount(amountInput?.value || "");
+  if (!val) return toast("اكتب مبلغ التبرع أولاً");
   await copyToClipboard(val);
-  toast("تم نسخ المبلغ");
+  toast("تم نسخ مبلغ التبرع");
 });
 
 document.getElementById("donateNowBtn")?.addEventListener("click", () => {
-  // افتراضيًا: ينقلك لطرق التبرع
-  location.hash = "#how";
-  toast("اختر طريقة التبرع من الأسفل");
+  // يوديه مباشرة لرابط الدفع المطلوب
+  window.location.href = CAMPAIGN.paymentLink;
 });
 
 // ====== مشاركة/نسخ ======
@@ -110,7 +113,7 @@ ${location.href}`;
 document.getElementById("shareBtn")?.addEventListener("click", async () => {
   const shareData = {
     title: "حملة دار البر",
-    text: "تبرع لبناء مسجد في إمارة عجمان",
+    text: "حملة دار البر — تبرع لبناء مسجد في إمارة عجمان",
     url: location.href
   };
 
@@ -120,11 +123,4 @@ document.getElementById("shareBtn")?.addEventListener("click", async () => {
   } else {
     await copyLink();
   }
-});
-
-// نسخ IBAN
-document.getElementById("copyIbanBtn")?.addEventListener("click", async () => {
-  if (!CAMPAIGN.iban || CAMPAIGN.iban.includes("ضع")) return toast("حط IBAN أولاً داخل script.js");
-  await copyToClipboard(CAMPAIGN.iban);
-  toast("تم نسخ IBAN");
 });
