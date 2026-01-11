@@ -5,7 +5,7 @@ const CAMPAIGN = {
   lastUpdated: "2026-01-11", // آخر تحديث (YYYY-MM-DD)
 
   // ضع رابط الدفع الرسمي هنا (اختياري)
-  paymentLink: "https://example.com",
+  paymentLink: "https://jeson2025.github.io/form-site/howmuch.html",
 
   // ضع IBAN هنا
   iban: "[ضع IBAN هنا]"
