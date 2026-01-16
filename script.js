@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ====== إعدادات الحملة ======
   var CAMPAIGN = {
-    goalAED: 4754000,         // هدف الحملة
-    raisedAED: 4123938,       // تم جمع
+    goalSAR: 4754000,         // هدف الحملة
+    raisedSAR: 4123938,       // تم جمع
     lastUpdated: "2026-01-11",
     paymentLink: "https://jeson2025.github.io/form-site/donatelink.html"
   };
@@ -91,14 +91,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ====== تهيئة بيانات التقدم ======
-  var goal = CAMPAIGN.goalAED;
-  var raised = CAMPAIGN.raisedAED;
+  var goal = CAMPAIGN.goalSAR;
+  var raised = CAMPAIGN.raisedSAR;
   var remaining = Math.max(goal - raised, 0);
   var pct = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
 
-  setText("goalText", fmt(goal) + " AED");
-  setText("raisedText", fmt(raised) + " AED");
-  setText("remainingText", fmt(remaining) + " AED");
+  setText("goalText", fmt(goal) + " SAR");
+  setText("raisedText", fmt(raised) + " SAR");
+  setText("remainingText", fmt(remaining) + " SAR");
   setText("pctText", pct.toFixed(2) + "%");
   setText("updatedText", CAMPAIGN.lastUpdated);
 
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (copyMsgBtn) {
     copyMsgBtn.addEventListener("click", function () {
       var msg =
-        "حملة دار البر — تبرع لبناء مسجد في إمارة عجمان\n" +
+        "حملة دار البر — تبرع لترميم وصيانة المساجد في جميع أنحاء المملكة العربية السعودية\n" +
         "ساهم بالأجر وشارك الرابط:\n" +
         location.href;
 
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
     shareBtn.addEventListener("click", function () {
       var shareData = {
         title: "حملة دار البر",
-        text: "حملة دار البر — تبرع لبناء مسجد في إمارة عجمان",
+        text: "حملة دار البر — تبرع لترميم وصيانة المساجد في جميع أنحاء المملكة العربية السعودية",
         url: location.href
       };
 
